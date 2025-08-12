@@ -1,13 +1,9 @@
 package ru.iman_burlyq.selmag.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.iman_burlyq.selmag.controller.payload.NewProductPayload;
 import ru.iman_burlyq.selmag.entity.Product;
 import ru.iman_burlyq.selmag.service.ProductService;
@@ -35,5 +31,10 @@ public class ProductsController {
         return "redirect:/catalogue/products/list";
     }
     //Todo 42:13
-
+    @GetMapping("/{productId:\\d+}")
+    public String getProduct(@PathVariable("productId") int productId, Model model) {
+        model.addAttribute("product",this.productService.findProduct(productId).orElseThrow());
+        return "catalogue/products/product";
+    }
+    //TODO 48:36
 }
