@@ -6,6 +6,7 @@ import ru.iman_burlyq.selmag.entity.Product;
 import ru.iman_burlyq.selmag.repository.ProductRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,17 @@ public class DefaultProductService implements ProductService {
     @Override
     public Optional<Product> findProduct(int productId) {
         return this.productRepository.findById(productId);
+    }
+
+    @Override
+    public void updateProduct(Integer id, String title, String details) {
+        this.productRepository.findById(id)
+                .ifPresentOrElse(product -> {
+                    product.setTitle(title);
+                    product.setDetails(details);
+                }, () -> {
+                    throw new NoSuchElementException();
+                });
     }
 
 }
